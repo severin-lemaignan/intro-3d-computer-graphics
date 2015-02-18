@@ -36,10 +36,10 @@ def house { {rgt}{lft}{frt}{bck}{tfr}{tbk}{bot}{door} }
 
 def axes {
     def sz 1
-    line [arrows=<->] (sz,0,0)(O)(0,sz,0)
-    line [arrows=->] (O)(0,0,sz)
+    line [line style=axis, arrows=<->] (sz,0,0)(O)(0,sz,0)
+    line [line style=axis, arrows=->] (O)(0,0,sz)
     line [line width=.2pt,color=blue,style=dashed] (O)(0,0,-10)
-    special |\node at #1 {$x$};\node at #2 {$y$};\node at #3 {$z$};|
+    special |\node at #1 {x};\node at #2 {y};\node at #3 {z};|
     (sz * 1.2,0,0)(0,sz * 1.2,0)(0,0,sz * 1.2)
 }
 

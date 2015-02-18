@@ -583,6 +583,7 @@ Rotations :
 \end{frame}
 
 \begin{frame}{En 3D}
+\begin{center}
 \[
 \begin{bmatrix} x' \\ y' \\ z' \\ 1 \end{bmatrix} = \begin{bmatrix}
     \block(3,3){R_{3 \times 3}} & \block(1,3){T_{1 \times 3}} \\
@@ -591,18 +592,27 @@ Rotations :
                  0 & 0  & 0 & 1
 \end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
 \]
+
+\uncover<2->{
+\Large
+Représentation standard des transformations dans l'espace (OpenGL, Direct3D...)
+}
+\end{center}
 \end{frame}
 
 \begin{frame}{Scene Graph}
     \begin{center}
     \only<1>{
-    \input{sketches/scene-graph.tex}
+    \input{sketches/scene-graph-only-cube.tex}
 }
-    \only<2->{
+     \only<2>{
     \input{sketches/scene-graph-cube.tex}
 }
+    \only<3->{
+    \input{sketches/scene-graph.tex}
+}
 
-    \uncover<3->{
+    \uncover<4->{
         \texttt{matrixPush()}, \texttt{matrixPop()}!
     }
     \end{center}
@@ -616,6 +626,10 @@ Rotations :
     \begin{center}
         \includegraphics[width=0.8\linewidth]{durer-projection}
     \end{center}
+\end{frame}
+
+\begin{frame}{}
+    Projection $\equiv$ fonction idempotente $\equiv P \cdot P = P$
 \end{frame}
 
 \begin{frame}{Rappel: Produit scalaire}
@@ -646,9 +660,36 @@ Rotations :
     \end{center}
 \end{frame}
 
-\begin{frame}{Projection}
-    \centering
+\begin{frame}{Projection orthographique}
+    \begin{center}
+
+\[
+\begin{bmatrix} 1 & 0 & 0 \\ 
+                0 & 1 & 0 \\
+                0 & 0 & 0
+\end{bmatrix} \begin{bmatrix} x \\ y \\ z \end{bmatrix}
+= \begin{bmatrix} x \\ y \\ 0 \end{bmatrix} 
+\]
+
+\only<2->{
+    \input{sketches/orthoprojection.tex}
+}
+\uncover<3->{
+    Transformation linéaire
+}
+
+\end{center}
+\end{frame}
+
+\begin{frame}{Projection perspective}
+    \begin{center}
     \input{sketches/projection.tex}
+
+\uncover<2->{
+    Comment linéariser ?
+}
+
+    \end{center}
 \end{frame}
 
 \begin{frame}{}
