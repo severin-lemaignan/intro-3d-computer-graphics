@@ -1,0 +1,44 @@
+def O (0,0,0)
+
+% right side (outside to right)
+def R1 (1,1,1) def R2 (1,-1,1) def R3 (1,-1,-1) def R4 (1,1,-1)
+def R5 (1,1.5,0)
+
+
+def hp scale(0.5) then translate([0,2,-2]) % house positioner
+
+def pR1 [[hp]]*(R1) def pR2 [[hp]]*(R2) def pR3 [[hp]]*(R3)
+def pR4 [[hp]]*(R4) def pR5 [[hp]]*(R5)
+
+def center [[hp]] * (((R1)-(O) + (R2)-(O) + (R3)-(O) + (R4)-(O) + (R5)-(O)) / 5 + (O))
+
+def side {
+
+    polygon[color=brown, draw=black, style=thick] (pR1)(pR2)(pR3)(pR4)(pR5)
+
+    line[style=dotted,arrows=*-](center)(O)
+    }
+
+
+def axes {
+    def sz 1
+    line [style=dashed,color=green,arrows=->] (O)(sz,0,0)
+    line [style=dashed,color=red,arrows=->] (O)(0,sz,0)
+    line [style=dashed,color=blue,arrows=->] (O)(0,0,sz)
+    special |\node at #1 {$x$};\node at #2 {$y$};\node at #3 {$z$};|
+    (sz * 1.2,0,0)(0,sz * 1.2,0)(0,0,sz * 1.2)
+}
+
+def eye (10,4,10)
+def look_at (0,0,-5)
+%put { view((eye), (look_at)) then perspective(12) } { {house}{axes}{projection_plane} {projection_rays} {projection} }
+put { view((eye), (look_at))} { {axes} }
+
+%put { view((eye), (look_at)) then rotate(30)} { {side} }
+
+def nb_rots 3
+repeat { nb_rots, rotate(180 / nb_rots, [1,2,3]), translate([3,0,0]) } {side}
+
+
+
+global { language tikz }

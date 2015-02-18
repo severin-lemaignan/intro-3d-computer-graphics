@@ -1,0 +1,19 @@
+def pierced_tetrahedron {
+    def p1 (0,0,1) def p2 (1,0,0)
+    def p3 (0,1,0) def p4 (-.3,-.5,-.8)
+    polygon(p1)(p2)(p3)
+    % original
+    polygon(p1)(p4)(p2)
+    % bottom
+    polygon(p1)(p3)(p4)
+    % left
+    polygon[fill=lightgray](p3)(p2)(p4) % rear
+    line[color=red](-1,-1,-1)(2,2,2)
+}
+
+{pierced_tetrahedron} % tetrahedron in original position
+
+repeat { 7, rotate(15, (0,0,0), [1,0,0]) % copy in new position
+then translate([2,0,0]) } {pierced_tetrahedron}
+
+global { language tikz }

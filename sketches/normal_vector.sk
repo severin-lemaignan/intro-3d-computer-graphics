@@ -1,0 +1,41 @@
+
+def gap [0,.2,0]
+
+def p1 (0.5,0,0.5) def p2 (-0.5,0,0.5) def p3 (-0.5,0,-0.5) def p4 (0.5,0,-0.5)
+def O (0,0,0)
+
+%def N unit( ((p3) - (p2)) * ((p1) - (p2)) )
+
+%def n1 ((p1)-(O) + (p2)-(O) + (p3)-(O)) / 3 + (O)
+
+def n1 (0,0,0)
+
+%def n2 (n1)+[N]
+
+def n3 unit((p2)-(p3)) + (n1)
+def n4 unit((p1)-(p2)) + (n1)
+
+def n2 (((n3)-(n1)) * ((n4)-(n1))) + (n1)
+
+def cross_product {
+    polygon(p1)(p4)(p3)(p2)
+    line[color=blue,arrows=->](n1)(n3)
+    line[color=green,arrows=->](n1)(n4)
+    line[color=red,arrows=->](n1)(n2)
+
+    special |\node at #1 {\footnotesize $\vec{a} \times \vec{b}$};|
+            ((n2)'x, (n2)'y * 1.2, (n2)'z)
+
+    special |\node at #1 {\footnotesize $\vec{a}$};|
+            ((n3)'x, (n3)'y, (n3)'z * 1.2)
+
+    special |\node at #1 {\footnotesize $\vec{b}$};|
+            ((n4)'x * 1.2, (n4)'y, (n4)'z)
+}
+
+def eye (-10,10,10)
+def look_at (0,0,0)
+put {view((eye), (look_at))} { {cross_product} }
+
+
+global { language tikz }
