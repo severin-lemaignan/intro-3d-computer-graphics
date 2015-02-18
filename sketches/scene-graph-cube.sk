@@ -24,7 +24,7 @@ def axes {
     line [line style=axis, color=blue,arrows=->] (O)(0,0,sz)
     special |\node at #1 {\tiny x};\node at #2 {\tiny y};\node at #3 {\tiny z};|[lay=in]
     (sz * 1.2,0,0)(0,sz * 1.2,0)(0,0,sz * 1.2)
-    %{cube}
+    {cube}
 }
 
 def t1 translate([-5,1,-5])

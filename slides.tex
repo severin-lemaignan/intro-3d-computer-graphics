@@ -129,14 +129,6 @@ EPFL}}
 
 \begin{frame}{Point, vecteur}
 \end{frame}
-
-\begin{frame}{Produit scalaire}
-
-    $\vec{a} \cdot \vec{b} = \colvec{3}{a_x}{a_y}{a_z} \cdot
-    \colvec{3}{b_x}{b_y}{b_z} = \| \vec{a} \| \| \vec{b} \| cos \theta = a_x b_x + a_y b_y + a_z b_z $
-
-\end{frame}
-
 \begin{frame}{Produit vectoriel}
 
     $ \vec{a} \times \vec{b} = \colvec{3}{a_x}{a_y}{a_z} \times
@@ -148,7 +140,14 @@ EPFL}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Transformations linéaires}
+\section[Transformations]{Transformations linéaires}
+
+\begin{frame}{Transformation linéaire}
+\Large
+\[
+    T(x) = Ax
+\]
+\end{frame}
 
 \begin{frame}{Expression matricielle}
 
@@ -193,11 +192,11 @@ $T( \vec{x} ) = 5 \vec{x} = 5 \mathbf{I} \vec{x} = \begin{bmatrix} 5 && 0 \\ 0
 \only<3>{
     \centering
     \begin{tikzpicture}
-        \draw[axis,->] (0,0) -- (1.5,0) node[right] {$+x$};
-        \draw[axis,->] (0,0) -- (0,1.5) node[right] {$+y$};
+        \draw[axis,->] (0,0) -- (1.5,0) node[right] {x};
+        \draw[axis,->] (0,0) -- (0,1.5) node[right] {y};
 
-        \draw[axis,->] (4,0) -- (5.5,0) node[right] {$+x$};
-        \draw[axis,->] (4,0) -- (4,1.5) node[right] {$+y$};
+        \draw[axis,->] (4,0) -- (5.5,0) node[right] {x};
+        \draw[axis,->] (4,0) -- (4,1.5) node[right] {y};
 
         \draw[dashed, thick, ->] (1.7,0.5) -- (3.4,0.5);
 
@@ -485,8 +484,8 @@ Rotations :
     \begin{multicols}{2}
     \centering
     \begin{tikzpicture}[every node/.style={anchor=south west}]
-        \draw[axis,->] (0,0) -- (2,0) node[right] {$+x$};
-        \draw[axis,->] (0,0) -- (0,2) node[right] {$+y$};
+        \draw[axis,->] (0,0) -- (2,0) node[right] {x};
+        \draw[axis,->] (0,0) -- (0,2) node[right] {y};
 
         \node[box] at (0,0) (base) {};
         \begin{scope}[rotate=30]
@@ -503,8 +502,8 @@ Rotations :
 \columnbreak
 \vspace*{\fill}
     \begin{tikzpicture}[every node/.style={anchor=south west}]
-        \draw[axis,->] (0,0) -- (2,0) node[right] {$+x$};
-        \draw[axis,->] (0,0) -- (0,2) node[right] {$+y$};
+        \draw[axis,->] (0,0) -- (2,0) node[right] {x};
+        \draw[axis,->] (0,0) -- (0,2) node[right] {y};
 
         \node[box] at (0,0) (base) {};
         \begin{scope}[cm={1,0,0,1,(2,1)}]
@@ -595,18 +594,58 @@ Rotations :
 \end{frame}
 
 \begin{frame}{Scene Graph}
-    \centering
+    \begin{center}
+    \only<1>{
     \input{sketches/scene-graph.tex}
+}
+    \only<2->{
+    \input{sketches/scene-graph-cube.tex}
+}
+
+    \uncover<3->{
+        \texttt{matrixPush()}, \texttt{matrixPop()}!
+    }
+    \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Les projections 3D}
+\section{Les projections}
+
 
 \begin{frame}{Projection}
     \begin{center}
         \includegraphics[width=0.8\linewidth]{durer-projection}
     \end{center}
 \end{frame}
+
+\begin{frame}{Rappel: Produit scalaire}
+    \begin{center}
+
+\[
+    \vec{a} \cdot \vec{b} = \colvec{3}{a_x}{a_y}{a_z} \cdot
+    \colvec{3}{b_x}{b_y}{b_z} = \| \vec{a} \| \| \vec{b} \| cos \theta = a_x b_x + a_y b_y + a_z b_z 
+\]
+
+    \begin{tikzpicture}
+        \draw[axis,->] (0,0) -- (2,0) node[right] {x};
+        \draw[axis,->] (0,0) -- (0,1.5) node[right] {y};
+
+        \draw[thick,->] (0,0) -- (1.5,1.2) node[above,midway]{$\vec{a}$};
+        \draw[thick,->] (0,0) -- (1,0) node[below,midway]{$\vec{u}$};
+        \draw[thin, dashed] (1.5,1.2) -- (1.5,0) {};
+
+        \draw (1.5,0) node[inner sep=0,minimum size=0.1cm,draw,circle,fill=red] {};
+
+    \end{tikzpicture}
+
+    Projection de $\vec{a}$ sur $\vec{u}$ : $(\vec(a) \cdot \vec{u}) \vec{u}$
+
+    \uncover<2>{
+        Que se passe-t'il pour des vecteurs orthogonaux ?
+    }
+    \end{center}
+\end{frame}
+
 \begin{frame}{Projection}
     \centering
     \input{sketches/projection.tex}
