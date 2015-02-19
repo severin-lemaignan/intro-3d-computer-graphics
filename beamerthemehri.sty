@@ -338,9 +338,14 @@
 \newcommand\imageframe[2][]{%
     {
     \setbeamertemplate{background canvas}{
-        \includegraphics[width=\paperwidth,height=\paperheight]{#2}
+        \noindent\colorbox{black}{%
+            \parbox[c][\paperheight][c]{\paperwidth}{%
+                \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{#2}
+            }
+        }
     }
     \setbeamertemplate{background}{}
+
     \begin{frame}[plain]
         \ifstrempty{#1}{ 
             % #1 is empty
