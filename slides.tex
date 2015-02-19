@@ -26,7 +26,7 @@
 
 \usepackage{dtklogos} % must be loaded after theme
 \usepackage{tikz}
-\usetikzlibrary{arrows,shapes,snakes,calc,mindmap,backgrounds,positioning,svg.path}
+\usetikzlibrary{intersections,arrows,shapes,snakes,calc,mindmap,backgrounds,positioning,svg.path}
 
 \graphicspath{{figs/}}
 
@@ -125,22 +125,6 @@ EPFL}}
 \begin{frame}{}
 
     Pipeline: from a cube in 3D to rasterization
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{La boite à outil mathématique}
-
-\begin{frame}{Point, vecteur}
-\end{frame}
-\begin{frame}{Produit vectoriel}
-
-    $ \vec{a} \times \vec{b} = \colvec{3}{a_x}{a_y}{a_z} \times
-    \colvec{3}{b_x}{b_y}{b_z} = \colvec{3}{a_yb_z - a_zb_y}{a_zb_x -
-    a_xb_z}{a_xb_y - a_yb_x} $
-    
-    \input{sketches/normal_vector.tex}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -290,7 +274,8 @@ Quelle transformation représente la matrice ci-dessous ?
 
     \uncover<2->{
     \LARGE
-    Mais pour les transformations \textbf{non linéaires}? (...comme les translations)
+    Mais pour les transformations \textbf{non linéaires}? (...comme les
+    translations)
     }
 
 \end{frame}
@@ -472,7 +457,7 @@ Rotations :
 
 \end{frame}
 
-\section{Composition de transformations}
+\section[Composition]{Composition de transformations}
 
 \begin{frame}{Composition de transformations}
     Simple multiplication de matrices !
@@ -618,13 +603,13 @@ Représentation standard des transformations dans l'espace (OpenGL, Direct3D...)
 }
 
     \uncover<4->{
-        \texttt{matrixPush()}, \texttt{matrixPop()}!
+        \texttt{pushMatrix()}, \texttt{popMatrix()}!
     }
     \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Les projections}
+\section[Projections]{Les projections}
 
 
 \begin{frame}{Projection}
@@ -697,6 +682,124 @@ Représentation standard des transformations dans l'espace (OpenGL, Direct3D...)
     \end{center}
 \end{frame}
 
+\begin{frame}{Projection perspective}
+    \begin{center}
+    \input{sketches/projection-cube.tex}
+
+    \end{center}
+\end{frame}
+
+
+
+\begin{frame}{}
+
+    \begin{center}
+
+    \begin{tikzpicture}
+        \draw[axis,->] (0.5,0) -- (6,0) node[right] {z};
+        \draw[axis,->] (0,0.3) -- (0,1.5) node[right] {y};
+
+        \node[box,cm={1,0,0,1,(0,0)}] at (5,1) (obj) {};
+
+        \path[draw,thick,name path=imageplan] (3,0) -- (3,1.4);
+
+        \only<1-2>{
+        \path[draw,thin, dashed,name path=ray1] (0,0) -- (obj.north west);
+        \path [name intersections={of=imageplan and ray1,by={pt1}}];
+        \fill[red,opacity=.8] (pt1) circle (2pt);
+        }
+
+        \path[draw, thin, dashed,name path=ray2] (0,0) -- (obj.north east);
+        \path [name intersections={of=imageplan and ray2,by={pt2}}];
+        \fill[red,opacity=.8] (pt2) circle (2pt);
+
+        \draw[axis,thin,<->] (0,-0.3) -- (3,-0.3) node[midway,below] {$d$};
+
+        \path[draw,thick] (40:0.32) -- (0,0) -- (-40:0.32);
+        \draw[fill=black] (0,0) -- (-40:0.15) arc (-40:40:.15) -- cycle;
+        \foreach \x in {-20, 0, 20} \path[draw,thick] (\x:0.2) -- (\x:0.3);
+
+        \uncover<1>{
+            \draw[<-] (-0.3,0.3) -- (-1,1.3) node[above] {\OE il (CdP)};
+            \draw[<-] (3,1.7) -- (3,2.3) node[above] {Plan image};
+        }
+
+        \uncover<3->{
+            \fill[yellow,opacity=.8] (obj.north east) circle (2pt) node[right,black] {\small $y_0,z_0$};
+            \draw (pt2) node[right] {\small $y_0'$};
+
+        }
+    \end{tikzpicture}
+
+    \only<3>{
+\[
+    \frac{y_0'}{y_0} = \frac{d}{z_0} \Rightarrow y_0' = \frac{d}{z_0}  y
+\]
+}
+
+
+    \uncover<4->{
+\[
+\begin{bmatrix} 1 & 0 & 0 \\ 
+                0 & 1 & 0 \\
+                0 & 0 & \alpha
+\end{bmatrix} \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}
+= \begin{bmatrix} x \\ y \\ \alpha \end{bmatrix} 
+\equiv \begin{bmatrix} x/\alpha \\ y/\alpha \\ 1 \end{bmatrix} 
+\]
+}
+\uncover<5>{
+\[
+\begin{bmatrix} 1 & 0 & 0 \\ 
+                0 & 1 & 0 \\
+                0 & 0 & \frac{z}{d}
+\end{bmatrix} \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}
+\equiv \begin{bmatrix} \frac{dx}{z} \\ \frac{dy}{z} \\ 1 \end{bmatrix} 
+\]
+}
+
+    \end{center}
+
+\end{frame}
+
+\begin{frame}{En 3D}
+    \begin{center}
+\[
+    \begin{bmatrix} 1 & 0 & 0 & 0\\ 
+                    0 & 1 & 0 & 0\\
+                    0 & 0 & 1 & 0 \\
+                    0 & 0 & 0 & \frac{z}{d}
+\end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
+= \begin{bmatrix} x \\ y \\ z \\ \frac{z}{d} \end{bmatrix} 
+\equiv \begin{bmatrix} \frac{dx}{z} \\ \frac{dy}{z} \\ d \\ 1 \end{bmatrix} 
+\]
+
+\only<1>{
+\Large
+Quel est le problème ?
+}
+\uncover<2->{
+\[
+    \begin{bmatrix} 1 & 0 & 0 & 0\\ 
+                    0 & 1 & 0 & 0\\
+                    0 & 0 & 1 & 0 \\
+                    0 & 0 & \frac{1}{d} & 0
+\end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
+= \begin{bmatrix} x \\ y \\ z \\ \frac{z}{d} \end{bmatrix} 
+\equiv \begin{bmatrix} \frac{dx}{z} \\ \frac{dy}{z} \\ d \\ 1 \end{bmatrix} 
+\]
+}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{}
+    Que représente $d$ ?
+    \uncover<2>{
+        La \textbf{distance focale} de notre caméra
+    }
+\end{frame}
+
 \begin{frame}{}
 
 \begin{center}
@@ -705,6 +808,9 @@ Représentation standard des transformations dans l'espace (OpenGL, Direct3D...)
 
 \end{frame}
 
+\begin{frame}{Matrice Model-View-Projection}
+
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Rendu 3D}
@@ -717,7 +823,18 @@ Représentation standard des transformations dans l'espace (OpenGL, Direct3D...)
 \begin{frame}{Lumières et ombres}
 \end{frame}
 
+\begin{frame}{Produit vectoriel}
+
+    $ \vec{a} \times \vec{b} = \colvec{3}{a_x}{a_y}{a_z} \times
+    \colvec{3}{b_x}{b_y}{b_z} = \colvec{3}{a_yb_z - a_zb_y}{a_zb_x -
+    a_xb_z}{a_xb_y - a_yb_x} $
+    
+    \input{sketches/normal_vector.tex}
+\end{frame}
+
+
 \begin{frame}{Raytracing}
+    Processus \emph{opposé} à celui de la projection.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

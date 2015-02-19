@@ -51,7 +51,7 @@ def p 5 % projection distance (plane at z=-p)
 def projection_plane {
     def sz 1.5
     polygon (-sz,-sz,-p)(sz,-sz,-p)(sz,sz,-p)(-sz,sz,-p)
-    special |\node[rotate=#1-2] at #3{\footnotesize projection plane};|
+    special |\node[rotate=#1-2] at #3{\footnotesize plan image};|
         (-sz,-sz,-p)(sz,-sz,-p)(0,-sz+.1,-p)
 }
 
