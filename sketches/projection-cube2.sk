@@ -5,6 +5,7 @@ def p1 (1,0,0) def p2 (1,0,1) def p3 (0,0,1)
 def p4 (0,1,0) def p5 (0,1,1) def p6 (1,1,1) def p7 (1,1,0)
 
 def cp rotate(-40, [0,1,0]) then translate([0,0,-12]) % cube positioner
+def textp translate([0.5,0.4,0])
 
 def tp1 [[cp]]*(p1)
 def tp2 [[cp]]*(p2)
@@ -14,6 +15,8 @@ def tp5 [[cp]]*(p5)
 def tp6 [[cp]]*(p6)
 def tp7 [[cp]]*(p7)
 def tO [[cp]]*(O)
+
+def labeltp7 [[textp]] * (tp7)
 
 % faces of the cube
 def cube {
@@ -25,12 +28,23 @@ def cube {
         polygon[cull=false,fill style=box](tp5)(tp3)(tp2)(tp6) % back
 }
 
+def p 5 % projection distance (plane at z=-p)
+
 def axes {
-    dots[dotsize=2pt,fill=red] (O)
-    special |\node at #1 {\OE il};| (-0.3,0.3,0)
+    def sz 1
+    line [line style=axis, arrows=<->] (sz,0,0)(O)(0,sz,0)
+    line [line style=axis, arrows=->] (O)(0,0,-sz)
+
+    special |\node at #1 {x};\node at #2 {y};\node at #3 {z};|
+    (sz * 1.2,0,0)(0,sz * 1.2,0)(0,0,-sz * 1.2)
+
+
+    dots[dotsize=2pt,fill=yellow,opacity=0.8] (tp7)
+    special |\node at #1 {$x,y,z$};| (labeltp7)
+
+    special |\node at #1 {\OE il};| (-0.3,0.3,0.3)
 }
 
-def p 5 % projection distance (plane at z=-p)
 def projection_plane {
     def sz 1.5
     polygon (-sz,-sz,-p)(sz,-sz,-p)(sz,sz,-p)(-sz,sz,-p)
@@ -40,8 +54,16 @@ def projection_plane {
 
 def projection_rays {
     def rayopt [line width=.3pt,color=gray]
-    line [rayopt](O)(tp6)
+    %line [rayopt](O)(tp6)
     line [rayopt](O)(tp7)
+
+    def proj project(p)
+    def ptp7 [[proj]]*(tp7)
+    dots[dotsize=2pt,fill=red] (ptp7)
+
+
+    def plabeltp7 [[textp]]*(ptp7)
+    special |\node at #1 {$x_p,y_p,d$};| (plabeltp7)
 }
 
 def projection {

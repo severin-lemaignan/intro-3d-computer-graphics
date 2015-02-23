@@ -30,7 +30,7 @@ bib: $(TARGET:.tex=.aux)
 
 paper: $(TARGET) $(SVG:.svg=.pdf) $(DOT:.dot=.pdf) $(SKETCHES:.sk=.tex)
 
-	TEXFONTS=:./fonts TEXINPUTS=:./sty $(LATEX) $(TARGET)
+	TEXFONTS=:./fonts TEXINPUTS=:./sty $(LATEX) -shell-escape $(TARGET)
 
 clean:
 	rm -f *.spl *.idx *.aux *.log *.snm *.out *.toc *.nav *intermediate *~ *.glo *.ist *.bbl *.blg $(SVG:.svg=.pdf) $(DOT:.dot=.svg) $(DOT:.dot=.pdf)

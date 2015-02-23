@@ -23,13 +23,13 @@ def pL4 [[hp]]*(L4) def pL5 [[hp]]*(L5)
 def pD1 [[hp]]*(D1) def pD2 [[hp]]*(D2) def pD3 [[hp]]*(D3)
 def pD4 [[hp]]*(D4)
 
-def rgt polygon[cull=false] (pR1)(pR2)(pR3)(pR4)(pR5)
-def lft polygon[cull=false] (pL5)(pL4)(pL3)(pL2)(pL1)
-def frt polygon[cull=false] (pR2)(pR1)(pL1)(pL2)
-def bck polygon[cull=false] (pR4)(pR3)(pL3)(pL4)
-def tfr polygon[cull=false] (pR1)(pR5)(pL5)(pL1)
-def tbk polygon[cull=false] (pR5)(pR4)(pL4)(pL5)
-def bot polygon[cull=false] (pR2)(pL2)(pL3)(pR3)
+def rgt polygon (pR1)(pR2)(pR3)(pR4)(pR5)
+def lft polygon (pL5)(pL4)(pL3)(pL2)(pL1)
+def frt polygon (pR2)(pR1)(pL1)(pL2)
+def bck polygon (pR4)(pR3)(pL3)(pL4)
+def tfr polygon (pR1)(pR5)(pL5)(pL1)
+def tbk polygon (pR5)(pR4)(pL4)(pL5)
+def bot polygon (pR2)(pL2)(pL3)(pR3)
 def door polygon[color=brown] (pD1)(pD2)(pD3)(pD4)
 def house { {rgt}{lft}{frt}{bck}{tfr}{tbk}{bot}{door} }
 
@@ -41,7 +41,7 @@ def axes {
     (sz * 1.2,0,0)(0,sz * 1.2,0)(0,0,sz * 1.2)
 }
 
-def isometric rotate(60,[1,0,-1]) then rotate(-60,[0,1,0]) then project()
+def isometric rotate(45,[1,0,-1]) then rotate(-45,[0,1,0]) then project()
 
 def orthoprojection {
     % e is a small number defined above
@@ -50,11 +50,20 @@ def orthoprojection {
     put { project() then translate([0,0,2*e]) } {axes}
 }
 
+def isoprojection {
+    % e is a small number defined above
+    put { [[isometric]] then translate([0,0,1*e]) } {house}
+    put { [[isometric]] then translate([0,0,2*e]) } {door}
+    put { [[isometric]] then translate([0,0,2*e]) } {axes}
+}
+
+
+
 def eye (10,4,10)
 def look_at (0,0,-5)
 
 put { view((eye), (look_at)) then perspective(14)} { {axes} {house}}
 
-put {translate([2.5,-1,0])}{orthoprojection}
+put {translate([2.5,-1,0])}{isoprojection}
 
 global { language tikz }
